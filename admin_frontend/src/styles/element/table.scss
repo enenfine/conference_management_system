@@ -1,0 +1,22 @@
+/* 全局表格样式 */
+.el-table {
+  // 表头居中
+  th.el-table__cell {
+    text-align: center !important;
+  }
+  
+  // 表格内容居中
+  .el-table__cell {
+    text-align: center !important;
+  }
+  
+  // 表头背景色
+  .el-table__header {
+    background-color: #f5f7fa;
+  }
+  
+  // 单元格高度
+  .el-table__row {
+    height: 60px;
+  }
+} 
