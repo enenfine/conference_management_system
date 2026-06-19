@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 /**
  * 会议室服务实现类
@@ -110,11 +111,8 @@ public class MeetingRoomServiceImpl extends ServiceImpl<MeetingRoomMapper, Meeti
         roomVO.setRoomCode(meetingRoom.getCode());
         //将数据库的会议室图像JSON数据转换为数组
         // 会议室图片：数据库没有 roomImage 或为空时，返回空数组
-        if (StringUtils.isNotBlank(meetingRoom.getRoomImage())) {
-            roomVO.setRoomImage(JSONUtil.toList(JSONUtil.parseArray(meetingRoom.getRoomImage()), String.class));
-        } else {
-            roomVO.setRoomImage(new ArrayList<>());
-        }
+        roomVO.setRoomImage(new ArrayList<>());
+
 
         roomVO.setCapacity(meetingRoom.getCapacity());
         roomVO.setLocation(meetingRoom.getLocation());

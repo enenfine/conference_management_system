@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.exam.service.impl.UserServiceImpl.SALT;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 用户接口
@@ -89,8 +91,13 @@ public class UserController {
         String ipAddress = NetUtils.getIpAddress(request);
         String localIpAddress = NetUtils.getLocalIpAddress();
         String publicIpAddress = NetUtils.getPublicIpAddress();
-        Map<String,String> map = Map.of("ipAddress",ipAddress,"localIpAddress",localIpAddress,"publicIpAddress",publicIpAddress);
+        Map<String, String> map = new HashMap<>();
+        map.put("ipAddress", ipAddress);
+        map.put("localIpAddress", localIpAddress);
+        map.put("publicIpAddress", publicIpAddress);
+
         return ResultUtils.success(map);
+
     }
 
     @ApiOperation("用户注销")
