@@ -7,8 +7,6 @@
 
 ## 2. 技术栈
 
-### 后端
-
 - Java 8
 - Spring Boot
 - Spring MVC
