@@ -1,172 +1,344 @@
-[toc]
+# 会议管理系统
 
-## 模板特点
+## 1. 项目简介
 
-### 主流框架 & 特性
+会议管理系统是一个基于 Spring Boot + Vue 的前后端分离项目，主要用于会议创建、会议室查看、参会人员管理、会议文件上传下载以及后台基础数据管理。
 
-- Spring Boot 2.7.x（贼新）
+
+## 2. 技术栈
+
+### 后端
+
+- Java 8
+- Spring Boot
 - Spring MVC
-- MyBatis + MyBatis Plus 数据访问（开启分页）
-- Spring Boot 调试工具和项目处理器
-- Spring AOP 切面编程
-- Spring Scheduler 定时任务
-- Spring 事务注解
+- MyBatis-Plus
+- MySQL
+- Lombok
+- Knife4j
+- Hutool
 
-### 数据存储
+### 前端
 
-- MySQL 数据库
-- Redis 内存数据库
-- Elasticsearch 搜索引擎
-- 腾讯云 COS 对象存储
+- Vue 3
+- Vite
+- TypeScript
+- Vue Router
+- Axios
+- Element Plus
 
-### 工具类
+### 数据库
 
-- Easy Excel 表格处理
-- Hutool 工具库
-- Apache Commons Lang3 工具类
-- Lombok 注解
+- MySQL
 
-### 业务特性
+## 3. 项目结构
 
-- 业务代码生成器（支持自动生成 Service、Controller、数据模型代码）
-- Spring Session Redis 分布式登录
-- 全局请求响应拦截器（记录日志）
-- 全局异常处理器
-- 自定义错误码
-- 封装通用响应类
-- Swagger + Knife4j 接口文档
-- 自定义权限注解 + 全局校验
-- 全局跨域处理
-- 长整数丢失精度解决
-- 多环境配置
-
-
-## 业务功能
-
-- 提供示例 SQL（用户、帖子、帖子点赞、帖子收藏表）
-- 用户登录、注册、注销、更新、检索、权限管理
-- 帖子创建、删除、编辑、更新、数据库检索、ES 灵活检索
-- 帖子点赞、取消点赞
-- 帖子收藏、取消收藏、检索已收藏帖子
-- 帖子全量同步 ES、增量同步 ES 定时任务
-- 支持微信开放平台登录
-- 支持微信公众号订阅、收发消息、设置菜单
-- 支持分业务的文件上传
-
-### 单元测试
-
-- JUnit5 单元测试
-- 示例单元测试类
-
-### 架构设计
-
-- 合理分层
+```text
+conference_management_system_cleaned
+├── cms_backend              后端 Spring Boot 项目
+│   ├── src/main/java        Java 源代码
+│   ├── src/main/resources   配置文件与 Mapper XML
+│   ├── sql                  数据库脚本
+│   └── pom.xml              Maven 配置文件
+│
+├── admin_frontend           管理端 Vue 项目
+│   ├── src/api              接口请求文件
+│   ├── src/views            页面文件
+│   ├── src/router           路由配置
+│   └── package.json         前端依赖配置
+│
+├── user_frontend            用户端 Vue 项目
+│   ├── src/api              接口请求文件
+│   ├── src/views            页面文件
+│   ├── src/router           路由配置
+│   └── package.json         前端依赖配置
+│
+└── init.sql                 数据库初始化脚本
+```
 
 
-## 快速上手
+### 4.1 登录注册功能
 
-> 所有需要修改的地方鱼皮都标记了 `todo`，便于大家找到修改的位置~
+- 用户登录
+- 用户注册
+- 获取当前登录用户
+- 退出登录
+- 管理员与普通用户角色区分
 
-### MySQL 数据库
+### 4.2 管理端功能
 
-1）修改 `application.yml` 的数据库配置为你自己的：
+管理端主要用于系统基础数据维护，保留功能如下：
 
-```yml
+- 用户管理
+    - 用户查询
+    - 新增用户
+    - 修改用户
+    - 删除用户
+    - 用户角色管理
+
+- 会议管理
+    - 会议列表查询
+    - 新增会议
+    - 修改会议
+    - 删除会议
+    - 查看会议基础信息
+
+- 会议类型管理
+    - 会议类型查询
+    - 新增会议类型
+    - 修改会议类型
+    - 删除会议类型
+
+- 会议室管理
+    - 会议室查询
+    - 新增会议室
+    - 修改会议室
+    - 删除会议室
+    - 查看会议室基础信息
+
+- 会议文件管理
+    - 文件列表查看
+    - 文件上传
+    - 文件下载或打开
+    - 文件删除
+
+### 4.3 用户端功能
+
+用户端主要面向普通用户使用，保留功能如下：
+
+- 会议管理
+    - 查看自己创建的会议
+    - 查看自己参与的会议
+    - 新增会议
+    - 编辑会议
+    - 取消会议
+    - 查看会议详情
+    - 选择会议室
+    - 选择参会人员
+
+- 会议室查看
+    - 查看会议室列表
+    - 查看会议室详情
+    - 根据会议室情况辅助选择会议场地
+
+- 会议文件
+    - 上传会议附件
+    - 查看会议文件
+    - 下载或打开会议文件
+
+
+## 6. 数据库说明
+
+### 6.1 数据库名称
+
+默认数据库名称为：
+
+```text
+z_cms_system
+```
+
+### 6.2 保留的数据表
+
+```text
+user
+meeting_type
+meeting_room
+meeting
+meeting_participant
+file_type
+meeting_file
+```
+
+### 6.3 初始化数据库
+
+在 MySQL 中执行项目根目录下的 `init.sql` 文件：
+
+```bash
+mysql -uroot -p < init.sql
+```
+
+也可以使用 Navicat、DataGrip、DBeaver 等数据库工具打开 `init.sql` 并执行。
+
+## 7. 后端启动说明
+
+### 7.1 修改数据库配置
+
+打开后端配置文件：
+
+```text
+cms_backend/src/main/resources/application.yml
+```
+
+根据本地 MySQL 环境修改数据库账号、密码和数据库地址：
+
+```yaml
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/my_db
+    url: jdbc:mysql://localhost:3306/z_cms_system
     username: root
     password: 123456
 ```
 
-2）执行 `sql/create_table.sql` 中的数据库语句，自动创建库表
+### 7.2 启动后端项目
 
-3）启动项目，访问 `http://localhost:8101/api/doc.html` 即可打开接口文档，不需要写前端就能在线调试接口了~
+进入后端目录：
 
-![](doc/swagger.png)
-
-### Redis 分布式登录
-
-1）修改 `application.yml` 的 Redis 配置为你自己的：
-
-```yml
-spring:
-  redis:
-    database: 1
-    host: localhost
-    port: 6379
-    timeout: 5000
-    password: 123456
+```bash
+cd cms_backend
 ```
 
-2）修改 `application.yml` 中的 session 存储方式：
+安装依赖并启动：
 
-```yml
-spring:
-  session:
-    store-type: redis
+```bash
+mvn clean package
+mvn spring-boot:run
 ```
 
-3）移除 `MainApplication` 类开头 `@SpringBootApplication` 注解内的 exclude 参数：
+后端默认启动地址：
 
-修改前：
-
-```java
-@SpringBootApplication(exclude = {RedisAutoConfiguration.class})
+```text
+http://localhost:8080/api
 ```
 
-修改后：
+Knife4j 接口文档地址：
 
-
-```java
-@SpringBootApplication
+```text
+http://localhost:8080/api/doc.html
 ```
 
-### Elasticsearch 搜索引擎
+## 8. 前端启动说明
 
-1）修改 `application.yml` 的 Elasticsearch 配置为你自己的：
+### 8.1 启动管理端
 
-```yml
-spring:
-  elasticsearch:
-    uris: http://localhost:9200
-    username: root
-    password: 123456
+进入管理端目录：
+
+```bash
+cd admin_frontend
 ```
 
-2）复制 `sql/post_es_mapping.json` 文件中的内容，通过调用 Elasticsearch 的接口或者 Kibana Dev Tools 来创建索引（相当于数据库建表）
+安装依赖：
 
-```
-PUT post_v1
-{
- 参数见 sql/post_es_mapping.json 文件
-}
+```bash
+npm install
 ```
 
-这步不会操作的话需要补充下 Elasticsearch 的知识，或者自行百度一下~
+启动项目：
 
-3）开启同步任务，将数据库的帖子同步到 Elasticsearch
-
-找到 job 目录下的 `FullSyncPostToEs` 和 `IncSyncPostToEs` 文件，取消掉 `@Component` 注解的注释，再次执行程序即可触发同步：
-
-```java
-// todo 取消注释开启任务
-//@Component
+```bash
+npm run dev
 ```
 
-### 业务代码生成器
+### 8.2 启动用户端
 
-支持自动生成 Service、Controller、数据模型代码，配合 MyBatisX 插件，可以快速开发增删改查等实用基础功能。
+进入用户端目录：
 
-找到 `generate.CodeGenerator` 类，修改生成参数和生成路径，并且支持注释掉不需要的生成逻辑，然后运行即可。
-
-```
-// 指定生成参数
-String packageName = "com.exam.springbootinit";
-String dataName = "用户评论";
-String dataKey = "userComment";
-String upperDataKey = "UserComment";
+```bash
+cd user_frontend
 ```
 
-生成代码后，可以移动到实际项目中，并且按照 `// todo` 注释的提示来针对自己的业务需求进行修改。
+安装依赖：
+
+```bash
+npm install
+```
+
+启动项目：
+
+```bash
+npm run dev
+```
+
+前端启动后，根据终端输出的地址在浏览器中访问即可。
+
+## 9. 默认账号
+
+如果已执行项目提供的初始化 SQL，可以使用以下测试账号登录。
+
+### 管理员账号
+
+```text
+账号：admin
+密码：12345678
+```
+
+### 普通用户账号
+
+```text
+账号：user
+密码：12345678
+```
+
+其他测试用户：
+
+```text
+zhangsan / 12345678
+lisi / 12345678
+wangwu / 12345678
+```
+
+## 10. 常见问题
+
+### 10.1 Java 版本问题
+
+本项目使用 Java 8，请确保 `pom.xml` 中配置为：
+
+```xml
+<java.version>1.8</java.version>
+```
+
+如果代码中出现 `Map.of()`、`List.of()`、`Set.of()` 等写法，需要改为 Java 8 支持的写法。
+
+### 10.2 数据库连接失败
+
+请检查：
+
+- MySQL 是否已启动
+- 数据库 `z_cms_system` 是否已创建
+- `init.sql` 是否已执行
+- `application.yml` 中的用户名和密码是否正确
+- 后端端口 `8080` 是否被占用
+
+### 10.3 前端接口请求失败
+
+请检查：
+
+- 后端是否已经启动
+- 后端访问地址是否为 `http://localhost:8080/api`
+- 前端请求代理配置是否正确
+- 浏览器控制台是否存在跨域或接口地址错误
+
+### 10.4 文件上传失败
+
+请检查：
+
+- 后端上传接口是否正常
+- 文件大小是否超过限制
+- `application.yml` 中是否配置了上传大小限制
+- 上传目录是否存在访问权限问题
+
+## 11. 构建命令
+
+### 后端构建
+
+```bash
+cd cms_backend
+mvn clean package
+```
+
+### 管理端构建
+
+```bash
+cd admin_frontend
+npm install
+npm run build
+```
+
+### 用户端构建
+
+```bash
+cd user_frontend
+npm install
+npm run build
+```
+
